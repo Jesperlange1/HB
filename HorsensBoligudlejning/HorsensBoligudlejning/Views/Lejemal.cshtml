@@ -1,0 +1,313 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Lejemal>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@{
+    Layout = "master.cshtml";
+}
+@{
+    var settings = (Indstillinger)Model.AncestorOrSelf(1).Siblings<Indstillinger>().FirstOrDefault();
+    var missingImage = Umbraco.Media("1135");
+
+    var commonAreaPictures = (ListeVisning)Model.AncestorOrSelf(1).Siblings<ListeVisning>().FirstOrDefault();
+    var listOfBuildings = commonAreaPictures.Children<BygningsBilleder>().ToList();
+    var listOfRightBuildings = new List<BygningsBilleder>();
+
+    foreach (var building in listOfBuildings)
+    {
+        foreach (var id in building.BygningsId)
+        {
+            if (id == (Model.Lejemalsnr / 100).ToString())
+            {
+                listOfRightBuildings.Add(building);
+            }
+        }
+    }
+
+    var antennePrice = Model.AntenneTilslutning != 0 ? Model.AntenneTilslutning : settings.StandardTalAntenneTilslutning;
+    var totalPrice = Model.Husleje != 0 && Model.Aconto != 0 ? Model.Husleje + Model.Aconto + antennePrice : 0;
+    var availableFrom = Model.LedigFra > DateTime.Now ? Model.LedigFra.ToString("dd/MM yyyy") : settings.StandardTekstLedigFra;
+    var showcaseDate = Model.FremvisningsDato.AddDays(1) > DateTime.Now ? Model.FremvisningsDato.ToString("dd/MM yyyy") : settings.StandardTekstFremvisning;
+    var showShowcaseTime = Model.FremvisningsDato.AddDays(1) > DateTime.Now ? true : false;
+
+    String checkForEmpty(string ele)
+    {
+        return ele != "" && ele != "0" ? ele.ToString() : settings.StandardVaerdiHvisIkkeUdfyldt;
+
+    }
+
+}
+<div id="apartment">
+    <div class="sliderSection">
+        @if (!Model.Ledig)
+        {
+            <div class="notAvailableBG" onclick="remove(this)">
+                <h3 class="notAvailableTitle">
+                    Denne lejlighed er ikke længere ledig
+                </h3>
+            </div>
+        }
+        <div></div>
+        <div class="topLeft">@(Model.Ledig ? "Ledig fra " + availableFrom.ToLower() : "Ikke ledig")</div>
+        <div class="topRight">Lejemålsnr. @Model.Lejemalsnr</div>
+        <div class="slider">
+            @foreach (var image in Model.Billeder)
+            {
+                <div><div class="slider-item" style="background-image:url(@image.Url);"></div></div>
+            }
+            @foreach (var building in listOfRightBuildings)
+            {
+                foreach (var image in building.Billeder)
+                {
+                    <div><div class="slider-item" style="background-image:url(@image.Url);"></div></div>
+                }
+            }
+            @if (!listOfRightBuildings.Any() && !Model.Billeder.Any())
+            {
+                <div><div class="slider-item" style="background-image:url(@missingImage.Url);"></div></div>
+            }
+        </div>
+    </div>
+    <div class="header">
+        <h2 class="headerTop">
+            @(checkForEmpty(Model.AntalVaerelser.ToString())) værelses lejlighed på @(checkForEmpty(Model.KvadratmeterM2.ToString()))m2 @(Model.AltanTerasse == "Terrasse" || Model.AltanTerasse == "Altan" ? "med " + Model.AltanTerasse.ToLower() : "")
+        </h2>
+        <h4 class="headerBottom">
+            @Model.Adresse - @Model.PostNr @Model.By
+        </h4>
+
+    </div>
+    <div class="mainSection">
+        <div class="priceInfo">
+            <div class="monthlyPrice box">
+                <div class="id">Lejemålsnr. @Model.Lejemalsnr</div>
+                <div class="rent priceLine">Husleje <span>@(checkForEmpty(Model.Husleje.ToString())),-</span></div>
+                <div class="priceLine">Varme a/conto <span>@(checkForEmpty(Model.Aconto.ToString())),-</span></div>
+                <div class="priceLine">Antenne <span>@antennePrice,-</span></div>
+                <div class="priceLine">Vand <span>@(Model.Vand != "" ? Model.Vand : "Inkluderet i husleje")</span></div>
+                <div class="priceLine total">I alt/md <span>@(checkForEmpty(totalPrice.ToString())),-</span></div>
+            </div>
+            <div class="deposit box">
+                @*<div class="priceLine">Depositum <span>@(Model.Husleje * 3)</span></div>
+                    <div class="priceLine">Forudbetalt Husleje <span>@(Model.Depositum - (Model.Husleje * 3))</span></div>*@
+                <div class="priceLine">Depositum <span>@checkForEmpty(Model.Depositum.ToString()),-</span></div>
+                <div class="priceLine">Første husleje <span>@checkForEmpty(totalPrice.ToString()),-</span></div>
+                <div class="priceLine total">Indflytningspris <span>@(checkForEmpty((Model.Depositum + totalPrice).ToString())),-</span></div>
+            </div>
+            <div class="dates box">
+                @if (Model.Ledig)
+                {
+                    <div class="availableFrom priceLine">
+                        Ledig fra <span>@availableFrom</span>
+                    </div>
+
+                    <div class="showcase">
+                        <span class="showcaseHeader">Fremvisning / åbent hus</span>
+                        @if (Model.FremvisningsDato.AddDays(1) > DateTime.Now)
+                        {
+                            <div class="showcaseLine">
+                                @showcaseDate @if (showShowcaseTime)
+                                {
+                                    <span>
+                                        Fra kl @Model.FremvisningsStartTid til kl @Model.FremvisningsSlutTid
+                                    </span>
+                                }
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="showcaseLine">
+                                @settings.StandardTekstFremvisning
+                            </div>
+                        }
+                    </div>
+                    <div class="showcaseDescription">
+                        @(Model.FremvisningsDato.AddDays(1) > DateTime.Now ? settings.OmAbentHus : "")
+                    </div>
+
+                }
+                else
+                {
+                    <div class="showcase">
+                        <span class="showcaseHeader">Ikke ledig</span>
+                        <div class="showcaseLine" style="margin-bottom:50px;">
+                            Denne lejlighed er ikke længere ledig
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <div class="description">
+            <div class="descriptionText">
+                <div class="descriptionTextText">
+                    @(Model.Beskrivelse.ToHtmlString() != "" ? Model.Beskrivelse : new HtmlString("<p>Der er desværre ingen beskrivelse af lejligheden på nuværende tidspunkt</p>"))
+                </div>
+            </div>
+            <a onclick="readMore()" class="descriptionReadMore">
+                Læs mere...
+            </a>
+        </div>
+
+        <div class="details">
+            <h3>Detaljer om bolig</h3>
+            @*<table>*@
+        <div class="tableSection">
+            @if (Model.Ledig)
+            {
+                <div class="tableItem">
+                    <span class="tableItemHeader">Fremvisning / åbent hus</span>
+                    <span class="tableItemResult">@(Model.FremvisningsDato.AddDays(1) > DateTime.Now ? showcaseDate : settings.StandardTekstFremvisning)</span>
+                </div>
+                if (showShowcaseTime && Model.FremvisningsDato.AddDays(1) > DateTime.Now)
+                {
+                    <div class="tableItem">
+                        <span class="tableItemHeader">Fremvisning tidspunkt</span>
+                        <span class="tableItemResult">Fra @Model.FremvisningsStartTid til @Model.FremvisningsSlutTid</span>
+                    </div>
+                }
+            }
+            <div class="tableItem">
+                <span class="tableItemHeader">Ledig fra</span>
+                <span class="tableItemResult">@(Model.Ledig ? availableFrom : "Ikke ledig")</span>
+            </div>
+            <div class="tableItem">
+                <span class="tableItemHeader">Værelser</span>
+                <span class="tableItemResult">@(checkForEmpty(Model.AntalVaerelser.ToString()))</span>
+            </div>
+            <div class="tableItem">
+                <span class="tableItemHeader">Størrelse</span>
+                <span class="tableItemResult">@(checkForEmpty(Model.KvadratmeterM2.ToString()))m2</span>
+            </div>
+            <div class="tableItem">
+                <span class="tableItemHeader">Altan/Terasse</span>
+                <span class="tableItemResult">@(Model.AltanTerasse.Length > 1 ? Model.AltanTerasse : settings.StandardVaerdiHvisIkkeUdfyldt)</span>
+            </div>
+            <div class="tableItem">
+                <span class="tableItemHeader">Lejemålets stand </span>
+                <span class="tableItemResult">@checkForEmpty(Model.LejemaletsStand)</span>
+            </div>
+            <div class="tableItem">
+                <span class="tableItemHeader">Husdyr tilladt</span>
+                <span class="tableItemResult">@(Model.Husdyr != "" ? Model.Husdyr : "nej")</span>
+            </div>
+            <div class="tableItem">
+                <span class="tableItemHeader">Gulve</span>
+                <span class="tableItemResult">@checkForEmpty(Model.Gulve)</span>
+            </div>
+            <div class="tableItem">
+                <span class="tableItemHeader">Fælles vaskeri for ejendom </span>
+                <span class="tableItemResult">@checkForEmpty(Model.FaellesVaskeri)</span>
+            </div>
+            <div class="tableItem">
+                <span class="tableItemHeader">Bad</span>
+                <span class="tableItemResult">@(Model.Bad != "" ? Model.Bad : "Eget")</span>
+            </div>
+            <div class="tableItem">
+                <span class="tableItemHeader">Toilet</span>
+                <span class="tableItemResult">@(Model.Toilet != "" ? Model.Toilet : "Eget")</span>
+            </div>
+        </div>
+            <h3>
+                Detaljer om udlejning
+            </h3>
+            <div class="tableSection">
+                <div class="tableItem">
+                    <span class="tableItemHeader">Husleje</span>
+                    <span class="tableItemResult">@(checkForEmpty(Model.Husleje.ToString())),-</span>
+                </div>
+                <div class="tableItem">
+                    <span class="tableItemHeader">Varme a/conto</span>
+                    <span class="tableItemResult">@(checkForEmpty(Model.Aconto.ToString())),-</span>
+                </div>
+                <div class="tableItem">
+                    <span class="tableItemHeader">Antenne tilslutning</span>
+                    <span class="tableItemResult">@(antennePrice),-</span>
+                </div>
+                @if (Model.FaellesVaskeri == "Ja")
+                {
+                    <div class="tableItem">
+                        <span class="tableItemHeader">Fælles vaskeri</span>
+                        <span class="tableItemResult">@(Model.FaellesVaskeriPris != "" && Model.FaellesVaskeriPris != null ? Model.FaellesVaskeriPris : "Inkluderet i husleje")</span>
+                    </div>
+                }
+                <div class="tableItem">
+                    <span class="tableItemHeader">Vand</span>
+                    <span class="tableItemResult">@(Model.Vand != "" ? Model.Vand : "Inkluderet i husleje")</span>
+                </div>
+                <div class="tableItem">
+                    <span class="tableItemHeader">El</span>
+                    <span class="tableItemResult">@(Model.El != "" ? Model.El : "Ikke inkluderet i husleje")</span>
+                </div>
+            </div>
+            <div class="tableSection">
+                <div class="tableItem">
+                    <span class="tableItemHeader">Depositum</span>
+                    <span class="tableItemResult">@(checkForEmpty((Model.Depositum > Model.Husleje * 3 ? Model.Husleje * 3 : Model.Depositum).ToString())),-</span>
+                </div>
+                <div class="tableItem">
+                    <span class="tableItemHeader">Forudbetalt husleje</span>
+                    <span class="tableItemResult">@((Model.Depositum > Model.Husleje * 3 ? Model.Depositum - (Model.Husleje * 3) : 0).ToString()),-</span>
+                </div>
+                <div class="tableItem">
+                    <span class="tableItemHeader">Første måneds husleje</span>
+                    <span class="tableItemResult">@(checkForEmpty(totalPrice.ToString())),-</span>
+                </div>
+                <div class="tableItem">
+                    <span class="tableItemHeader">Indflytningspris</span>
+                    <span class="tableItemResult">@(checkForEmpty((Model.Depositum + totalPrice).ToString())),-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var descriptionText = $(".descriptionTextText").first();
+    var descriptionReadMore = $(".descriptionReadMore").first();
+    var originalHeight = 0;
+    $("document").ready(function () {
+        $('.slider').slick({
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: true,
+            autoplay: true,
+            autoplaySpeed: 5000,
+            fade: false,
+            dots: true
+        });
+
+        /*Script for read more functionality*/
+        
+
+        console.log(descriptionText);
+
+        $(descriptionText).css("height", "initial");
+        var originalHeight = $(descriptionText).height();
+        $(descriptionText).css("height", "250px");
+        console.log(originalHeight);
+        if (originalHeight > 250) {
+            descriptionReadMore.css("display", "block");
+        }     
+      
+    });
+    function readMore() {
+        console.log("læs mere")
+        console.log($(descriptionReadMore).text().trim())
+        if ($(descriptionReadMore).text().trim() == "Læs mere...") {
+                console.log("height")
+                $(descriptionText).css("height", "auto");
+                $(descriptionReadMore).text("Læs mindre...");
+            }
+            else {
+                $(descriptionText).css("height", "250px");
+                $(descriptionReadMore).text("Læs mere...");
+            }
+        }
+    function remove(ele) {
+        $(ele).remove();
+    }
+
+</script>

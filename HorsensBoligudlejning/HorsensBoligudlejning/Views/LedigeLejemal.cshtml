@@ -1,0 +1,87 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.LedigeLejemal>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@using Umbraco.Web;
+@{
+    var missingImage = Umbraco.Media("1135");
+
+    var commonAreaPictures = (ListeVisning)Model.AncestorOrSelf(1).Siblings<ListeVisning>().FirstOrDefault();
+    var listOfBuildings = commonAreaPictures.Children<BygningsBilleder>().ToList(); ;
+    BygningsBilleder commonAreaBuilding = listOfBuildings.FirstOrDefault();  
+    var settings = (Indstillinger)Model.AncestorOrSelf(1).Siblings<Indstillinger>().FirstOrDefault();
+    
+    String checkForEmpty(string ele)
+    {
+        return ele != "" && ele != "0" ? ele.ToString() : settings.StandardVaerdiHvisIkkeUdfyldt;
+
+    }
+    String commonAreaForBuilding(int lejemalsnr) {
+        foreach (var building in listOfBuildings)
+        {
+            foreach (var id in building.BygningsId)
+            {
+                if (id == (lejemalsnr / 100).ToString())
+                {
+                    return building.Billeder.FirstOrDefault().Url;
+                }
+            }
+        }
+        return missingImage.Url;
+    }
+
+}
+@{
+    Layout = "master.cshtml";
+}
+
+<div class="cards">
+    @foreach (Lejemal item in Model.Children)
+    {
+        var availableFrom = item.LedigFra > DateTime.Now ? item.LedigFra.ToString("dd/MM yyyy") : settings.StandardTekstLedigFra;    
+
+        <a class="card @(item.Ledig? "" : "notAvailable")" href="@item.Url">
+            @if (!item.Ledig) { 
+            <div class="notAvailableBG">
+                <div class="notAvailableTitle">
+                    Denne lejlighed er ikke længere ledig
+                </div>
+            </div>
+            }
+            <div class="cardHeader">
+                <div class="title">
+                    @item.Adresse - @item.PostNr @item.By
+                </div>
+                <div class="date">
+                    @(item.Ledig ? "Ledig fra " + availableFrom : "Ikke ledig")
+                </div>
+            </div>
+            <div class="cardContent">
+                 <div class="cardImage" style="background-image:url(@(item.Billeder.Any()? item.Billeder.FirstOrDefault().Url: commonAreaForBuilding(item.Lejemalsnr)))">
+
+            </div>
+                <div class="cardContentRight">
+                    <div class="cardContentHeader">
+                        @(checkForEmpty((item.Husleje + item.Aconto).ToString()))kr incl. aconto
+                    </div>
+                    <div class="cardContentDescription">
+                        @(item.KortBeskrivelse != "" ? item.KortBeskrivelse : "Ingen kort beskrivelse")
+                    </div>
+                </div>
+            </div>
+            <div class="cardFooter">
+                <div class="cardFooterBox">
+                    <i class="far fa-building"></i> Lejemålsnr. @item.Lejemalsnr
+                </div>
+                <div class="cardFooterBox">
+                    <i class="fas fa-bed"></i> @(checkForEmpty(item.AntalVaerelser.ToString())) @(item.AntalVaerelser == 1 ? "værelse" : "værelser") @(item.AltanTerasse == "Terrasse" || item.AltanTerasse == "Altan" ? "med " + item.AltanTerasse : "")
+                </div>
+                <div class="cardFooterBox">
+                    <i class="fas fa-ruler"></i>  @(checkForEmpty(item.KvadratmeterM2.ToString()))m2
+                </div>
+            </div>
+
+        </a>
+
+
+
+    }
+</div>

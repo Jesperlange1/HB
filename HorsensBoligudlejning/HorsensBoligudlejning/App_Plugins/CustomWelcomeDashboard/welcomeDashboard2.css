@@ -1,0 +1,29 @@
+﻿.welcome-dashboard h1 {
+    font-size: 4em;
+    color: gray;
+}
+.welcome-dashboard .buttons {
+    display:flex;
+    justify-content:flex-start;
+    margin-bottom:10px;
+}
+.welcome-dashboard .button {   
+    background-color: #365598;
+    padding: 7px 12px;
+    color: white;
+    margin:10px;
+}
+.welcome-dashboard .lastEntries{
+    background-color:transparent;
+    width:100%;
+}
+    .welcome-dashboard .lastEntries tr {
+        border-top: 1px solid;
+        text-align:left;
+    }
+        .welcome-dashboard .lastEntries tr td {
+            padding: 5px 0px 10px;
+        }
+.welcome-dashboard .lastEntries tr td:last-child {
+    text-align:right;
+}

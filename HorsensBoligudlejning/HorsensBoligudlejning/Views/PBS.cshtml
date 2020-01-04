@@ -1,0 +1,23 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.PBS>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@{
+	Layout = "master.cshtml";
+}
+    <div class="page">
+        <div class="smallHero" style="background-image:url(@Model.HovedBillede.Url)"></div>
+        <h1 class="pageHeader">@Model.Overskrift</h1>
+        <div class="headerBorder">
+
+        </div>
+        <div class="pageContent slim" style="margin-bottom:0px; padding-bottom:25px;">
+            @Model.SideIndhold
+          
+        </div>
+        <iframe class="pbs" src="https://www.betalingsservice.dk/BS/?id=3&pbs=02203774&pbscheck=a2qjqjAwKj3T7cqZBDrCSA%3D%3D&dbnr=&dbgr=00001&repeatKundeNr=false&kundenrLabel=Lejem%C3%A5lsnr.+med+4+eller+40+f%C3%B8r&version=2&t">
+        </iframe>
+
+    </div>
+
+  <script>
+      
+  </script>

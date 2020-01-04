@@ -1,0 +1,67 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.XMlsitemap>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@{
+    Layout = null;
+    Response.ContentType = "text/xml";
+    IPublishedContent siteHomePage = Model.Root();
+    IEnumerable<IPublishedContent> sitePages = siteHomePage.Children();
+}
+
+@helper RenderSiteMapUrlEntry(IPublishedContent node)
+{
+    string changeFreq = "monthly";
+    if (node.Id == 1086)
+    {
+        changeFreq = "daily";
+    }
+    else if (node.ContentType.Alias == "lejemal")
+    {
+        changeFreq = "weekly";
+    }
+    var priority = "0.5";   
+    if (node.Id == 1086)
+    {
+        priority = "0.9";
+    }
+    else if (node.ContentType.Alias == "lejemal")
+    {
+        priority = "0.7";
+    }
+    else if (node == Model.Root())
+    {
+        priority = "0.9";
+    }
+
+
+    <url>
+        <loc>@node.Url(mode: UrlMode.Absolute)</loc>
+        <lastmod>@(string.Format("{0:s}+00:00", node.UpdateDate))</lastmod>
+        <changefreq>@changeFreq</changefreq>
+        <priority>@priority</priority>
+    </url>
+}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://www.google.com/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+    @RenderSiteMapUrlEntry(siteHomePage)
+
+    @foreach (var page in sitePages)
+    {
+        if (page.Value<bool>("indexerIkke") != true)
+        {
+            @RenderSiteMapUrlEntry(page)
+            if (page.Children.Any())
+            {
+                var childPages = page.Children();
+
+                foreach (var childPage in childPages)
+                {
+                    if (childPage.Value<bool>("indexerIkke") != true)
+                    {
+                        @RenderSiteMapUrlEntry(childPage)
+                    }
+                }
+            }
+        }
+    }
+
+</urlset>

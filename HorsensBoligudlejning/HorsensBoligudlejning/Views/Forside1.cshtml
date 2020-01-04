@@ -1,0 +1,16 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Forside2>
+    @using ContentModels = Umbraco.Web.PublishedModels;
+    @{
+    Layout = "master.cshtml";
+    }
+
+
+    <div class="page">
+        <div class="smallHero" style="background-image:url(@Model.HovedBillede.Url)">
+            <div class="smallHeroSignature">@Model.HovedbilledeUnderskrift</div>
+        </div>  
+       
+        <div class="pageContent">
+            @Html.GetGridHtml(Model, "grid")
+        </div>
+    </div>

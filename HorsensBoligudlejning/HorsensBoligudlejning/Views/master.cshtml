@@ -1,0 +1,198 @@
+﻿@using Umbraco.Core.PropertyEditors
+@inherits UmbracoViewPage
+@{
+    Layout = null;
+    //Get basic design settings from settings
+    var settings = Model.AncestorOrSelf(1).Siblings<Indstillinger>().FirstOrDefault();
+    var homePage = Model.AncestorOrSelf(1);
+    var selection = homePage.Children.Where(x => x.IsVisible());
+    var chevron = Umbraco.Media("1106");
+    var bars = Umbraco.Media("1108");
+    var exit = Umbraco.Media("1109");
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>@(Model.HasValue("metaTitel") ? Model.Value("metaTitel") : Model.Name + " - " + settings.HjemmesideNavnet) </title>
+
+
+    <meta name="description" content="@(Model.HasValue("ledig") ? "Ledig lejlighed - " +Model.Value("AntalVaerelser").ToString() +  
+        "værelses lejlighed på "+ Model.Value("KvadratmeterM2").ToString() +"m2 beliggende på " +
+        Model.Value("Adresse")+ " - "+ Model.Value("PostNr")+ " "+ Model.Value("By")+ ". "+Model.Value("kortBeskrivelse") : Model.Value("metaBeskrivelse"))">
+
+    @if (Model.Value<bool>("indexerIkke") == true)
+    {
+        <meta name="robots" content="noindex, follow">
+    }
+    else
+    {
+        <meta name="robots" content="index, follow">        
+    }
+
+    <link rel="icon" href="@settings.Ikon.Url">
+
+    <link rel="stylesheet" href="~/scripts/Plugin/slick-1.8.1/slick/slick.css" />
+    <link rel="stylesheet" href="~/scripts/Plugin/slick-1.8.1/slick/slick-theme.css" />
+    @**@
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="@Url.Content("~/css/umbraco-starterkit-style.css")" />*@
+    <link rel="stylesheet" href="@Url.Content("~/css/style.css")" />
+
+    <script src="~/scripts/jquery-3.4.1.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/scripts/Plugin/slick-1.8.1/slick/slick.min.js"></script>
+    <link rel="stylesheet" href="~/css/font-awesome/all.min.css" />
+    <link href="~/Plugins/qookies-master/min/css/qk-default.css" rel="stylesheet" />
+    <link href="~/Plugins/qookies-master/min/css/qk-theme-default.css" rel="stylesheet" />
+
+    @RenderSection("Header", required: false)
+</head>
+
+<body class="frontpage">
+    <div class="mobile-nav">
+        <nav class="nav-bar">
+            @foreach (var item in selection)
+            {
+                if (item.Value<bool>("skjulFraMenu") != true)
+                {
+
+                    <div class="dropdown">
+                        <a class="nav-link @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="@item.Url">
+                            <i class="@(item.HasValue("menuIkon") ? item.Value("menuIkon") : "")"></i> @item.Name  <span>
+                            </span>
+                        </a>
+                        @if (item.Id != 1086)
+                        {
+                            foreach (var child in item.Children)
+                            {
+                                if (child.Value<bool>("skjulFraMenu") != true)
+                                {
+                                    <a class="nav-link nav-link--black mobile-child nav-link--air-bottom @(child.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="@child.Url">
+                                        <img class="chevron" src="@chevron.Url" />
+                                        <i class="@(child.HasValue("menuIkon") ? child.Value("menuIkon") : "")"></i>
+                                        @child.Name
+                                    </a>
+                                }
+                            }
+                        }
+                    </div>
+                }
+            }
+        </nav>
+    </div>
+    <header class="header">
+        <div class="logo">
+            @if (settings.Logo != null && !string.IsNullOrEmpty(settings.Logo.Url))
+            {
+                <div class="nav-link--home">
+                    <a href="@homePage.Url"><img class="logo-image" src="@settings.Logo.Url" alt="@settings.HjemmesideNavnet"></a>
+                </div>
+            }
+            else
+            {
+                <a class="nav-link nav-link--home nav-link--home__text logo-text" href="/">@settings.HjemmesideNavnet</a>
+            }
+        </div>
+
+        <nav class="nav-bar top-nav">
+            @foreach (var item in selection)
+            {
+                if (item.Value<bool>("skjulFraMenu") != true)
+                {
+                    <div class="dropdown">
+                        <a class="nav-link @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="@item.Url">
+                            <i class="@(item.HasValue("menuIkon") ? item.Value("menuIkon") : "")"></i>
+                            @item.Name<span>
+                                @if (item.Children.Count() > 0 && item.Id != 1086)
+                                {<img class="chevron" src="@chevron.Url" />}
+                            </span>
+                        </a>
+                        @if (item.Children().Count() > 0 && item.Id != 1086)
+                        {
+                            <div class="dropdown-content">
+                                @foreach (var child in item.Children)
+                                {
+                                    if (item.Value<bool>("skjulFraMenu") != true)
+                                    {
+                                        <a class="nav-link nav-link--black nav-link--air-bottom @(child.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="@child.Url">
+                                            <i class="@(child.HasValue("menuIkon") ? child.Value("menuIkon") : "")"></i> @child.Name
+                                        </a>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+
+            }
+        </nav>
+
+        <div class="mobile-nav-handler">
+            <div class="hamburger" id="toggle-nav">
+                <img id="menu-bars" src="@bars.Url" alt="menu" />
+                <img id="menu-exit" src="@exit.Url" alt="exit menu" />
+            </div>
+        </div>
+
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="section--themed">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    @settings.VenstreKolonneFooter
+                </div>
+                <div class="col-md-4">
+                    @settings.MidtKolonneFooter
+                </div>
+                <div class="col-md-4">
+                    @settings.HojreKolonneFooter
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="qookies"></div>
+
+
+    <script src="@Url.Content("~/scripts/umbraco-starterkit-app.js")"></script>
+    <script src="~/Plugins/qookies-master/min/js/js.cookie.js"></script>
+    <script src="~/Plugins/qookies-master/min/js/qookies.js"></script>
+
+    <script>
+        var lang = {
+            title: "Cookies",
+            description: "<p>Denne hjemmeside benytter cookies",
+            link: {
+                text: "Læs mere",
+                url :"/om-os/cookie-og-privatlivspolitik/"
+            },
+            buttons: {
+                accept: "Forstået!"
+            }
+        }
+        $('.qookies').qookies({
+            theme: 'theme-default',
+            position: 'bottom-right',
+            expires: 30,// 30 days
+            path: '/',
+            value: '1',
+            cookieName: 'qookies-accepted',
+            link: {
+                text: lang.link.text,
+                url: lang.link.url
+            },
+        });
+
+    </script>
+</body>
+
+</html>

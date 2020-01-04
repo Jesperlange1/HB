@@ -1,0 +1,13 @@
+﻿
+    <div class="welcome-dashboard" ng-controller="CustomWelcomeDashboardController as vm">       
+        <div class="buttons">
+            <a class="button" href="/umbraco#/content/content/edit/1086">Se oversigt af lejemål </a>
+        </div>
+        <h4>De 10 seneste ting du har arbejdet på</h4>
+        <table class="lastEntries">
+            <tr ng-repeat="logEntry in vm.UserLogHistory.items">
+                <td><i class="{{logEntry.Content.icon}}"></i> <a href="/Umbraco/#/{{logEntry.editUrl}}">{{logEntry.Content.name}} <span ng-if="logEntry.comment">{{logEntry.comment}}</span></a></td>
+                <td><span class="text-muted">Ændret den: {{logEntry.timestamp  | date:'medium'}}</td>
+            </tr>
+        </table>       
+    </div>

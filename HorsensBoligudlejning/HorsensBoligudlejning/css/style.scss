@@ -1,0 +1,805 @@
+﻿@import "scss/Colors.scss";
+@import "scss/Fonts.scss";
+@import "scss/Functions.scss";
+
+
+/*General styling*/
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    font-family: sans-serif;
+}
+
+body {
+    margin: 0px;
+    background-color: $secondaryBackgroundColor;
+    color: $primaryTextColor;
+    font-size: 1em;
+    font-weight: 400;
+    margin: 0;
+    display: block;
+    line-height: 1.3em;
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto;
+    overflow-x:hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: initial;
+}
+
+h1 {
+    font-size: 3em;
+}
+
+h2 {
+    font-size: 2.5em;
+}
+
+h3 {
+    font-size: 2.2em;
+}
+
+h4 {
+    font-size: 2em;
+    font-weight: 400;
+}
+
+h5 {
+    font-size: 1.5em;
+}
+
+
+p, li, label {
+    font-size: 1em;
+    font-weight: 400;
+    margin: 0;
+    display: block;
+    line-height: 1.3em;
+}
+
+a {
+    text-decoration: underline;
+    color: $primaryTextColor;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+
+img {
+    max-width: 100%;
+    height: auto !important;
+}
+
+hr {
+    max-width: 50%;
+    width: 150px;
+    border-color:$primaryTextColor;
+    opacity:0.7;
+}
+.smallText {
+    font-size: 13px;
+    font-weight: 400;
+}
+.ctaButton {
+    text-align: center;
+    font-size: 16px;
+    background-color: $ctaColor;
+    margin: auto;
+    display: table;
+    border-radius: 10px;
+    color: white;
+    padding: 8px 15px;
+    min-width: 120px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    &:hover {
+        background-color: darken($ctaColor, 10%)
+    }
+}
+.blueButton {
+    text-align: center;
+    font-size: 16px;
+    background-color: $primaryColor;
+    margin: auto;
+    display: table;
+    border-radius: 10px;
+    color: white;
+    padding: 8px 15px;
+    min-width: 120px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    &:hover {
+        background-color: darken($primaryColor, 10%)
+    }
+}
+.whiteButton {
+    text-align: center;
+    font-size: 16px;
+    background-color: $whiteColor;
+    margin: auto;
+    display: table;
+    border-radius: 10px;
+    color: $primaryTextColor;
+    padding: 8px 15px;
+    min-width: 120px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    a {
+        color: $primaryTextColor;
+        text-decoration: none;
+    }
+
+    &:hover {
+        background-color: darken($whiteColor, 10%)
+    }
+}
+.redButton {
+    text-align: center;
+    font-size: 16px;
+    background-color: #C40D1F;
+    margin: auto;
+    display: table;
+    border-radius: 10px;
+    color: white;
+    padding: 8px 15px;
+    min-width: 120px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    &:hover {
+        background-color: darken( #C40D1F, 10%)
+    }
+}
+.col-md-6 {
+    margin: 0 auto;
+}
+@media(max-width:600px) {
+    h1 {
+        font-size: 2.4em;
+    }
+
+    h2 {
+        font-size: 2.1em;
+    }
+
+    h3 {
+        font-size: 1.8em;
+    }
+
+    h4 {
+        font-size: 1.6em;
+        font-weight: 400;
+    }
+
+    h5 {
+        font-size: 1.5em;
+    }
+    td{
+        width:100% !important;
+        display:block;
+        margin-bottom:3px;
+        &:last-child{
+            margin-bottom:15px;
+        }
+    }
+    table{
+        width:100% !important;
+    }
+}
+
+/*General class styling*/
+
+
+.ta-center {
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-md-4 {
+    width: 100%;
+    padding: 15px;
+}
+
+@media (min-width: 992px) {
+    .col-md-4 {
+        width: 33.333333%;
+    }
+}
+
+/*Header styling*/
+@import "scss/Header.scss";
+/* Main styling START*/
+main {
+    //padding-top: 84px;
+    min-height: calc(100vh - 290px);
+    max-width: 1200px;
+    margin: auto;
+    background-color: $primaryBackgroundColor;
+    position: relative;
+}
+
+.content {
+    padding: 50px 20px;
+    position: relative;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+/* Frontpage*/
+#frontpage {
+    .top-section {
+        display: flex;
+    }
+
+    .headerImage {
+        width: calc(100% - 350px);
+        min-height: 400px;
+        height: auto;
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .right-sidebar {
+        padding: 20px;
+    }
+}
+
+
+@media (max-width:600px) {
+    #frontpage {
+        .top-section {
+            flex-wrap: wrap;
+        }
+
+        .headerImage {
+            width: 100%;
+            height: 200px;
+            min-height: initial;
+        }
+
+        .right-sidebar {
+            margin: auto;
+        }
+    }
+}
+
+
+/*Apartment overview page*/
+
+.cards {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.card {
+    margin: 20px;
+    min-width: 320px;
+    border-radius: 3px;
+    width: calc(50% - 40px);
+    box-shadow: 1px 1px 7px #333;
+    text-decoration: none;
+    color: $primaryTextColor;
+    position: relative;
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    .cardHeader {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+
+        .title {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .date {
+            min-width: 172px;
+        }
+    }
+
+    .cardContent {
+        display: flex;
+    }
+
+    .cardImage {
+        background-position: center center;
+        background-size: cover;
+        width: 160px;
+        height: 120px;
+    }
+
+    .cardContentRight {
+        width: calc(100% - 160px);
+
+
+        .cardContentHeader {
+            width: 100%;
+            background-color: $primaryColor;
+            padding: 10px;
+            color: $secondaryTextColor;
+            font-weight: 600;
+        }
+
+        .cardContentDescription {
+            padding: 10px;
+            height: 80px;
+            overflow: hidden;
+        }
+
+        .cardContentDetails {
+            padding: 10px;
+            display: flex;
+            display: none;
+            justify-content: flex-end;
+        }
+    }
+
+    .cardFooter {
+        background-color: $secondaryBackgroundColor;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        border-top: 1px solid #C2C2C2;
+
+        .cardFooterBox {
+            width: 33.33333%;
+            padding: 7px;
+            font-size: 14px;
+            font-weight: bold;
+
+            &:first-child {
+                border-right: 2px solid $secondaryColor;
+                border-bottom-left-radius: 15px;
+            }
+
+            &:last-child {
+                border-left: 2px solid $secondaryColor;
+                border-bottom-right-radius: 15px;
+            }
+        }
+    }
+}
+
+@media (max-width:950px) {
+    .card {
+        width: 100%;
+    }
+}
+
+@media(max-width: 600px) {
+    .card .cardHeader .title {
+    }
+
+    .card .cardHeader {
+        flex-wrap: wrap;
+    }
+}
+/*Not availabe apartment*/
+.notAvailableBG {
+    z-index: 10;
+    background: rgba(0,0,0,0.7);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 3px;
+    cursor:pointer;
+}
+
+.notAvailableTitle {
+    position: absolute;
+    z-index: 10;
+    transform: rotate(15deg);
+    text-align: center;
+    margin-top: 85px;
+    font-weight: bold;
+    color: white;
+    width: 100%;
+    font-size: 1.4em;
+}
+
+
+/*.button{
+    border-radius:100px;
+    padding:10px 20px;
+    box-shadow: 1px 1px 3px $secondaryColor;
+    background-color:$ctaColor;
+    color:$secondaryTextColor;
+}*/
+
+
+/*Apartment page*/
+
+#apartment {
+}
+
+/* Apartment page - Slider*/
+.sliderSection {
+    position: relative;
+
+    .topRight, .topLeft {
+        position: absolute;
+        top: 0px;
+        background-color: rgba(255,255,255,0.8);
+        padding: 5px 10px;
+        z-index: 999;
+        color: $primaryTextColor;
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    .topRight {
+        right: 0px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .topLeft {
+        left: 0px;
+        border-bottom-right-radius: 5px;
+    }
+      
+        .notAvailableTitle {
+            transform:rotate(0deg);
+            font-size: 2em;
+            margin-top:10vh;
+        }
+    
+}
+
+.slider {
+}
+
+.slick-prev:before, .slick-next:before {
+    font-family: 'slick';
+    font-size: 50px;
+    line-height: 1;
+    opacity: .85;
+    color: $primaryTextColor;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-prev, .slick-next {
+    z-index: 99;
+    height: 50px;
+    width: 50px;
+}
+
+.slick-prev {
+    left: 25px;
+}
+
+.slick-next {
+    right: 25px;
+}
+
+.slider-item {
+    background-size: cover;
+    background-position: center center;
+    height: 600px;
+    max-height: calc(100vh - 80px);
+    width: 100%;
+    border-bottom: 2px solid rgba($primaryTextColor, 0.2)
+}
+
+.slick-dots li button:before {
+    font-size: 15px;
+}
+
+@media(max-width:700px) {
+    .slider-item {
+        height: 400px;
+    }
+}
+
+@media(max-width:400px) {
+    .slider-item {
+        height: 300px;
+    }
+
+    .topRight {
+        display: none;
+    }
+}
+/* Apartment page - content*/
+#apartment {
+    .header {
+        margin-top: -30px;
+        padding: 30px 30px 20px;
+        display: block;
+        background-color: $primaryBackgroundColor;
+        color: $primaryTextColor;
+
+        .headerTop {
+            display: block;
+        }
+    }
+
+    .mainSection {
+        min-height: 550px;
+    }
+
+    .priceInfo {
+        position: relative;
+        background-color: $primaryColor;
+        color: $secondaryTextColor;
+        width: 350px;
+        font-weight: 600;
+        float: right;
+
+        .id {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            padding: 7px 10px;
+            z-index: 999;
+            font-weight: 500;
+        }
+
+        .box {
+            padding: 30px 25px 10px;
+            border-top: 2px solid $secondaryTextColor;
+
+            &:first-child {
+                border: 0;
+                margin-top: 15px;
+            }
+        }
+
+        .priceLine {
+            padding: 5px 0;
+
+            span {
+                float: right;
+                font-weight: normal;
+            }
+
+            &.total {
+                border-top: 1px solid $secondaryTextColor;
+            }
+        }
+
+        .showcaseHeader {
+            text-align: center;
+            display: block;
+            margin-top: 20px;
+            font-size: 26px;
+        }
+
+        .showcaseLine {
+            display: block;
+            text-align: center;
+            margin: 10px auto;
+        }
+
+        .showcaseDescription {
+            font-weight: 400;
+            font-style: italic;
+            font-size: 0.9em;
+            padding: 0 10px 10px 10px;
+        }
+    }
+
+    .description {
+        width: calc(100% - 350px);
+        border-top: 2px solid $primaryTextColor;
+        border-bottom: 2px solid $primaryTextColor;
+        padding: 20px;
+        overflow: hidden;
+        min-height: 300px;
+
+        .descriptionText {
+            min-height: 250px;
+        }
+
+        .descriptionTextText {
+            overflow: hidden;
+            height: 250px;
+        }
+
+        .descriptionReadMore {
+            cursor: pointer;
+            float: right;
+            margin-right: 15px;
+            color: $primaryColor;
+            display: none;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .details {
+        padding: 20px;
+        width: calc(100% - 350px);
+
+        .tableSection {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .tableItem {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border: 1.5px solid rgba($primaryTextColor, 0.15);
+            margin: 10px;
+            width: calc(50% - 20px);
+            border-radius: 2px;
+        }
+
+        .tableItemHeader {
+            font-weight: 600;
+        }
+    }
+}
+
+@media(max-width:800px) {
+    #apartment {
+        .priceInfo {
+            width: 100%;
+        }
+
+        .description {
+            width: 100%;
+            min-height: 200px;
+        }
+
+        .details {
+            width: 100%;
+
+            .tableItemResult {
+                min-width: 124px;
+                text-align: right;
+            }
+        }
+    }
+}
+
+@media(max-width:700px) {
+    #apartment {
+        .details {
+            .tableItem {
+                width: calc(100% - 20px);
+                margin-bottom: 0px;
+            }
+        }
+    }
+}
+/* Standard page */
+.page {
+    .smallHero {
+        height: 300px;
+        background-size: cover;
+        background-position: center center;
+        width: 100%;
+        position: relative;
+        display: block;
+        border-bottom: 2px solid rgba($primaryTextColor, 0.2);
+        z-index: 0;
+    }
+
+    .smallHeroSignature {
+        font-size: 20px;
+        color: $secondaryTextColor;     
+        display: block;
+        text-align: right;
+        height: 20px;
+        z-index: 999;
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        text-shadow: 1px 1px 7px #000;
+    }
+
+    .headerBorder {
+        width: 150px;
+        max-width: 80%;
+        border: 1px $primaryColor solid;
+        margin: auto;
+        margin-top: -10px;
+        margin-bottom: 30px;
+    }
+
+    .pageHeader {
+        display: block;
+        text-align: center;
+        margin: 30px;
+    }
+
+    .pageContent {
+        padding: 0px 30px;
+        padding-bottom: 80px;
+    }
+
+    .pageContent.slim {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    li {
+        display: list-item;
+    }
+}
+
+/* PBS page*/
+
+.pbs {
+    min-height: 800px;
+    width: 100%;
+    padding-top: 30px;
+    border:0;
+    .checkbox{
+        display:none;
+    }
+    body{
+        background-color:white;
+    }
+    #debnr{
+        display:none;
+    }
+}
+@media (max-width:600px){
+    .pbs {
+        min-height:930px;
+    }
+}
+
+/* Main styling END*/
+/* Footer styling START*/
+footer {
+    background-color: $primaryColor;
+    color: $secondaryTextColor;
+
+    hr {
+        border-color: $secondaryTextColor;
+    }
+
+    a {
+        color: $secondaryTextColor;
+    }
+}
+/* Footer styling END */
+/* Cookie styling START */
+
+/* Cookie styling END */

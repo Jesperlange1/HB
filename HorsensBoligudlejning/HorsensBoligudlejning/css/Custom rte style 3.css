@@ -1,0 +1,90 @@
+
+
+/**umb_name:Stor overskrift*/
+h2 {
+	font-size:40px;
+	font-weight:600;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+/**umb_name:Mellem overskrift*/
+h3 {
+	font-size:35px;
+	font-weight:600;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+/**umb_name:Lille overskrift*/
+h5 {
+	font-size:24px;
+	font-weight:600;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+/**umb_name:Paragraph*/
+p {
+	margin:0px;
+}
+
+/**umb_name:Grøn knap*/
+.ctaButton {
+	text-align: center;
+	font-size: 16px;
+	background-color: #1bc358;
+	margin: auto;
+	display:table;
+	border-radius: 10px;
+	color: white;
+	padding: 8px 15px;
+	min-width: 120px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+/**umb_name:Blå knap*/
+.blueButton {
+	text-align: center;
+	font-size: 16px;
+	background-color: #365598;
+	margin: auto;
+	display:table;
+	border-radius: 10px;
+	color: white;
+	padding: 8px 15px;
+	min-width: 120px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+/**umb_name:Hvid knap*/
+.whiteButton {
+	text-align: center;
+	font-size: 16px;
+	background-color: white;
+	margin: auto;
+	display: table;
+	border-radius: 10px;
+	color: #333;
+	padding: 8px 15px;
+	min-width: 120px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+/**umb_name:Rød knap*/
+.redButton {
+	text-align: center;
+	font-size: 16px;
+	background-color: #C40D1F;
+	margin: auto;
+	display: table;
+	border-radius: 10px;
+	color: white;
+	padding: 8px 15px;
+	min-width: 120px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}

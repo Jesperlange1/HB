@@ -1,0 +1,16 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.StandardSide>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@{
+    Layout = "master.cshtml";
+}
+
+<div class="page">
+    <div class="smallHero" style="background-image:url(@Model.HovedBillede.Url)"></div>
+    <h1 class="pageHeader">@Model.Overskrift</h1>
+    <div class="headerBorder">
+
+    </div>
+    <div class="pageContent slim">
+        @Model.SideIndhold
+    </div>
+</div>
